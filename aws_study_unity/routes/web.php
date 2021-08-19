@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Country;
+use App\Models\Photo;
+use App\Models\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,3 +148,91 @@ Route::get('/create', function() {
 // Route::get('/forcedelete', function() {
 //     Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
 // });
+
+
+//ここから ELOQUENT RELATIONSHIP
+
+// 1 to 1
+// Route::get('/user/{id}/post', function($id) {
+//     dd(User::find($id)->post->title);
+// });
+
+// Route::get('/post/{id}/user', function($id) {
+//     return Post::find($id)->user->name;
+// });
+
+// Route::get('/posts', function() {
+//     $user = User::find(1); 
+
+//     foreach($user->posts as $post) {
+//         echo $post->title . "<br>";   
+//     }
+// });
+
+// Route::get('/user/{id}/role', function($id) {
+//     $user = User::find($id);
+
+//     dd($user->roles);
+// });
+
+// Route::get('/user/pivot', function() {
+//     $user = User::find(1);
+
+//     foreach($user->roles as $role) {
+//         echo $role->pivot->id;
+//     }
+// });
+
+// Route::get('/user/country', function() {
+//     $country = Country::find(1);
+
+//     foreach($country->posts as $post) {
+
+//         print_r($post->title);
+//         echo "\n";
+//     }
+// });
+
+
+// monopoly
+
+// Route::get('/user/photos', function() {
+//     $user = User::find(1);
+
+//     foreach($user->photos as $photo) {
+//         return $photo;
+//     }
+// });
+
+// Route::get('/post/{id}/photos', function($id) {
+//     $user = Post::find($id);
+
+//     foreach($user->photos as $photo) {
+//         return $photo;
+//     }
+// });
+
+// Route::get('/photo/{id}/post', function($id) {
+
+
+//     $photo = Photo::findOrFail($id);
+//     return $photo->imageable;
+
+
+// });
+
+// // Many to Many
+// Route::get('/post/{id}/tag', function($id) {
+//     $post = Post::find($id);
+
+//     foreach($post->tags as $tag) {
+//         echo $tag->name . "<br>";
+//     }
+// });
+
+Route::get('/tag/post', function() {
+    $tag = Tag::find(1);
+    foreach($tag->posts as $post) {
+        echo $post . "<br>";
+    }
+});
