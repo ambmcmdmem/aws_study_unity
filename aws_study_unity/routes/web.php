@@ -237,41 +237,69 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // //     }
 // // });
 
-use App\Models\User;
-use App\Models\Address;
+// use App\Models\User;
+// use App\Models\Address;
 
-Route::get('/confirm', function() {
-});
+// Route::get('/confirm', function() {
+// });
 
-Route::get('/insert/{id}', function($id) {
-    $user = User::find($id);
+// Route::get('/insert/{id}', function($id) {
+//     $user = User::find($id);
     
 
-    $address = new Address(['name' => 'テスト市テスト町']);
+//     $address = new Address(['name' => 'テスト市テスト町']);
 
-    if(!Address::whereUserId($id)->exists()) {
-        $user->address()->save($address);
-    } else {
-        return 'Its address already had';
-    }
-});
+//     if(!Address::whereUserId($id)->exists()) {
+//         $user->address()->save($address);
+//     } else {
+//         return 'Its address already had';
+//     }
+// });
 
-Route::get('/update', function() {
+// Route::get('/update', function() {
 
-    $address = Address::whereUserId(1)->first();
-    $address->name = 'アップデートアドレス';
+//     $address = Address::whereUserId(1)->first();
+//     $address->name = 'アップデートアドレス';
 
-    $address->save();
+//     $address->save();
 
+// });
+
+// Route::get('/read', function() {
+//     $user = User::findOrFail(1);
+
+//     return $user->address->name;
+// });
+
+// Route::get('/delete', function() {
+//     $user = User::findOrFail(1);\
+//     $user->address()->delete();
+// });
+
+use App\Models\Post;
+use App\Models\User;
+
+Route::get('/insert', function() {
+    $user = User::findOrFail(1);
+    $post = new Post([
+        'title' => 'post title!',
+        'body'  => 'It\'s post body!'
+    ]);
+
+    $user->posts()->save($post);
 });
 
 Route::get('/read', function() {
     $user = User::findOrFail(1);
+    return $user->posts;
+});
 
-    return $user->address->name;
+Route::get('/update', function() {
+    $user = User::find(1);
+    $user->posts()->whereId(1)->update(['title' => 'Update!!!!!']);
 });
 
 Route::get('/delete', function() {
-    $user = User::findOrFail(1);
-    $user->address()->delete();
+    $user = User::find(1);
+    $user->posts()->whereId(1)->delete();
 });
