@@ -276,30 +276,98 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //     $user->address()->delete();
 // });
 
-use App\Models\Post;
+// use App\Models\Post;
+// use App\Models\User;
+
+// Route::get('/insert', function() {
+//     $user = User::findOrFail(1);
+//     $post = new Post([
+//         'title' => 'post title!',
+//         'body'  => 'It\'s post body!'
+//     ]);
+
+//     $user->posts()->save($post);
+// });
+
+// Route::get('/read', function() {
+//     $user = User::findOrFail(1);
+//     return $user->posts;
+// });
+
+// Route::get('/update', function() {
+//     $user = User::find(1);
+//     $user->posts()->whereId(1)->update(['title' => 'Update!!!!!']);
+// });
+
+// Route::get('/delete', function() {
+//     $user = User::find(1);
+//     $user->posts()->whereId(1)->delete();
+// });
+
 use App\Models\User;
+use App\Models\Role;
 
-Route::get('/insert', function() {
-    $user = User::findOrFail(1);
-    $post = new Post([
-        'title' => 'post title!',
-        'body'  => 'It\'s post body!'
+Route::get('/create', function() {
+    $user = User::find(1);
+    $create_role = new Role([
+        'name' => 'test'
     ]);
-
-    $user->posts()->save($post);
+    foreach($user->roles as $role) {
+        if($create_role->name == $role->name) {
+            return 'Already';
+        }
+    }
+    $user->roles()->save($create_role);
 });
 
 Route::get('/read', function() {
-    $user = User::findOrFail(1);
-    return $user->posts;
+    $user = User::find(1);
+    foreach($user->roles as $role) {
+        print_r($role . "<br>");
+    }
 });
 
 Route::get('/update', function() {
     $user = User::find(1);
-    $user->posts()->whereId(1)->update(['title' => 'Update!!!!!']);
+
+    if($user->has('roles')) {
+        foreach($user->roles as $role) {
+            if($role->name == 'admin') {
+                $role->name = 'notAd';
+                $role->save();
+            }
+        }
+    }
+
 });
 
 Route::get('/delete', function() {
     $user = User::find(1);
-    $user->posts()->whereId(1)->delete();
+
+    if($user->has('roles')) {
+        foreach($user->roles as $role) {
+            if($role->name == 'notAd') {
+
+                $role->delete();
+            }
+        }
+    }
+
+});
+
+Route::get('/attach', function() {
+    $user = User::find(1);
+    // roleがuserに付加される
+    $user->roles()->attach(2);
+}); 
+
+Route::get('/detach', function() {
+    $user = User::find(1);
+    // roleがuserに付加される
+    $user->roles()->detach(2);
+}); 
+
+Route::get('/sync', function() {
+    $user = User::find(1);
+    $user->roles()->sync([1, 2]);
 });
