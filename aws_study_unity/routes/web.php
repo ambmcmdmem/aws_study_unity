@@ -304,70 +304,138 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //     $user->posts()->whereId(1)->delete();
 // });
 
-use App\Models\User;
-use App\Models\Role;
+// use App\Models\User;
+// use App\Models\Role;
+
+// Route::get('/create', function() {
+//     $user = User::find(1);
+//     $create_role = new Role([
+//         'name' => 'test'
+//     ]);
+//     foreach($user->roles as $role) {
+//         if($create_role->name == $role->name) {
+//             return 'Already';
+//         }
+//     }
+//     $user->roles()->save($create_role);
+// });
+
+// Route::get('/read', function() {
+//     $user = User::find(1);
+//     foreach($user->roles as $role) {
+//         print_r($role . "<br>");
+//     }
+// });
+
+// Route::get('/update', function() {
+//     $user = User::find(1);
+
+//     if($user->has('roles')) {
+//         foreach($user->roles as $role) {
+//             if($role->name == 'admin') {
+//                 $role->name = 'notAd';
+//                 $role->save();
+//             }
+//         }
+//     }
+
+// });
+
+// Route::get('/delete', function() {
+//     $user = User::find(1);
+
+//     if($user->has('roles')) {
+//         foreach($user->roles as $role) {
+//             if($role->name == 'notAd') {
+
+//                 $role->delete();
+//             }
+//         }
+//     }
+
+// });
+
+// Route::get('/attach', function() {
+//     $user = User::find(1);
+//     // roleがuserに付加される
+//     $user->roles()->attach(2);
+// }); 
+
+// Route::get('/detach', function() {
+//     $user = User::find(1);
+//     // roleがuserに付加される
+//     $user->roles()->detach(2);
+// }); 
+
+// Route::get('/sync', function() {
+//     $user = User::find(1);
+//     $user->roles()->sync([1, 2]);
+// });
+
+use App\Models\Photo;
+use App\Models\Product;
+use App\Models\Staff;
 
 Route::get('/create', function() {
-    $user = User::find(1);
-    $create_role = new Role([
-        'name' => 'test'
-    ]);
-    foreach($user->roles as $role) {
-        if($create_role->name == $role->name) {
+    $staff = Staff::find(1);
+    $photo_name = 'example2.jpg';
+
+    foreach($staff->photos as $photo) {
+        if($photo->path == $photo_name) {
             return 'Already';
         }
     }
-    $user->roles()->save($create_role);
+
+    
+    
+    $staff->photos()->create([
+        'path' => $photo_name
+    ]);
 });
 
+
 Route::get('/read', function() {
-    $user = User::find(1);
-    foreach($user->roles as $role) {
-        print_r($role . "<br>");
+    $staff = Staff::find(1);
+
+    foreach($staff->photos as $photo) {
+        print_r($photo . "<br>");
     }
 });
 
 Route::get('/update', function() {
-    $user = User::find(1);
-
-    if($user->has('roles')) {
-        foreach($user->roles as $role) {
-            if($role->name == 'admin') {
-                $role->name = 'notAd';
-                $role->save();
-            }
-        }
+    $staff = Staff::find(1);
+    $photo = $staff->photos()->wherePath('nice.jpg')->first();
+    if($photo) {
+        $photo->path = 'test.jpg';
+        $photo->save();
+    } else {
+        return 'Already';
     }
-
 });
 
 Route::get('/delete', function() {
-    $user = User::find(1);
-
-    if($user->has('roles')) {
-        foreach($user->roles as $role) {
-            if($role->name == 'notAd') {
-
-                $role->delete();
-            }
-        }
+    $staff = Staff::find(1);
+    $photo = $staff->photos()->wherePath('test.jpg')->first();
+    if($photo) {
+        $photo->delete();
+    } else {
+        return 'Already';
     }
-
 });
 
-Route::get('/attach', function() {
-    $user = User::find(1);
-    // roleがuserに付加される
-    $user->roles()->attach(2);
-}); 
+// 振り分けていないものを対応させる
+Route::get('/assign', function() {
+    $staff = Staff::find(1);
+    $photo = Photo::find(4);
 
-Route::get('/detach', function() {
-    $user = User::find(1);
-    // roleがuserに付加される
-    $user->roles()->detach(2);
-}); 
+    $staff->photos()->save($photo);
+});
 
-Route::get('/sync', function() {
-    $user = User::find(1);
-    $user->roles()->sync([1, 2]);
+Route::get('/un-assign', function() {
+    $staff = Staff::find(1);
+
+    $staff->photos()->whereId(3)->update([
+        'imageable_id' => 0,
+        'imageable_type' => ''
+    ]);
 });
