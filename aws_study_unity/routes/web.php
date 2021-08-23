@@ -372,70 +372,136 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //     $user->roles()->sync([1, 2]);
 // });
 
-use App\Models\Photo;
-use App\Models\Product;
-use App\Models\Staff;
+// use App\Models\Photo;
+// use App\Models\Product;
+// use App\Models\Staff;
+
+// Route::get('/create', function() {
+//     $staff = Staff::find(1);
+//     $photo_name = 'example2.jpg';
+
+//     foreach($staff->photos as $photo) {
+//         if($photo->path == $photo_name) {
+//             return 'Already';
+//         }
+//     }
+
+    
+    
+//     $staff->photos()->create([
+//         'path' => $photo_name
+//     ]);
+// });
+
+
+// Route::get('/read', function() {
+//     $staff = Staff::find(1);
+
+//     foreach($staff->photos as $photo) {
+//         print_r($photo . "<br>");
+//     }
+// });
+
+// Route::get('/update', function() {
+//     $staff = Staff::find(1);
+//     $photo = $staff->photos()->wherePath('nice.jpg')->first();
+//     if($photo) {
+//         $photo->path = 'test.jpg';
+//         $photo->save();
+//     } else {
+//         return 'Already';
+//     }
+// });
+
+// Route::get('/delete', function() {
+//     $staff = Staff::find(1);
+//     $photo = $staff->photos()->wherePath('test.jpg')->first();
+//     if($photo) {
+//         $photo->delete();
+//     } else {
+//         return 'Already';
+//     }
+// });
+
+// // 振り分けていないものを対応させる
+// Route::get('/assign', function() {
+//     $staff = Staff::find(1);
+//     $photo = Photo::find(4);
+
+//     $staff->photos()->save($photo);
+// });
+
+// Route::get('/un-assign', function() {
+//     $staff = Staff::find(1);
+
+//     $staff->photos()->whereId(3)->update([
+//         'imageable_id' => 0,
+//         'imageable_type' => ''
+//     ]);
+// });
+
+use App\Models\Post;
+use App\Models\Video;
+use App\Models\Tag;
+use App\Models\Taggable;
 
 Route::get('/create', function() {
-    $staff = Staff::find(1);
-    $photo_name = 'example2.jpg';
+    $post = Post::find(1);
+    $find_tag = Tag::find(1);
+    $video = Video::find(1);
+    $media_arr = [$post, $video];
 
-    foreach($staff->photos as $photo) {
-        if($photo->path == $photo_name) {
-            return 'Already';
+    foreach($media_arr as $media) {
+        $createBool = true;
+        foreach($media->tags as $tag) {
+            if($tag->name == $find_tag->name) {
+                $createBool = false;
+            }
+        }
+        if($createBool) {
+            $media->tags()->save($find_tag);
+        } else {
+            echo 'Already!<br>';
         }
     }
+    
+        // $post->tags()->save($tag);
 
-    
-    
-    $staff->photos()->create([
-        'path' => $photo_name
-    ]);
+
+        // $video->tags()->save($tag);
 });
 
-
 Route::get('/read', function() {
-    $staff = Staff::find(1);
+    $post = Post::find(1);
 
-    foreach($staff->photos as $photo) {
-        print_r($photo . "<br>");
+    foreach($post->tags as $tag) {
+        print_r($tag->name);
     }
 });
 
 Route::get('/update', function() {
-    $staff = Staff::find(1);
-    $photo = $staff->photos()->wherePath('nice.jpg')->first();
-    if($photo) {
-        $photo->path = 'test.jpg';
-        $photo->save();
-    } else {
-        return 'Already';
+    $post = Post::find(1);
+
+    foreach($post->tags as $tag) {
+        /*if($tag->name == 'first tag') {
+            $tag->name = 'updated tag';
+            $tag->save();
+        }*/
+        $tag->whereName('updated tag')->update(['name' => 'updated again tag']);
     }
 });
 
 Route::get('/delete', function() {
-    $staff = Staff::find(1);
-    $photo = $staff->photos()->wherePath('test.jpg')->first();
-    if($photo) {
-        $photo->delete();
-    } else {
-        return 'Already';
+    $post = Post::find(1);
+
+    foreach($post->tags as $tag) {
+        /*if($tag->name == 'first tag') {
+            $tag->name = 'updated tag';
+            $tag->save();
+        }*/
+        $delete_id = $tag->whereId(1)->delete();
+        if($delete_id) {
+            Taggable::whereTagId($delete_id)->delete();
+        }
     }
-});
-
-// 振り分けていないものを対応させる
-Route::get('/assign', function() {
-    $staff = Staff::find(1);
-    $photo = Photo::find(4);
-
-    $staff->photos()->save($photo);
-});
-
-Route::get('/un-assign', function() {
-    $staff = Staff::find(1);
-
-    $staff->photos()->whereId(3)->update([
-        'imageable_id' => 0,
-        'imageable_type' => ''
-    ]);
 });
