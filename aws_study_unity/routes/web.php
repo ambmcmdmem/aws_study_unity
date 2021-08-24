@@ -440,68 +440,89 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //     ]);
 // });
 
-use App\Models\Post;
-use App\Models\Video;
-use App\Models\Tag;
-use App\Models\Taggable;
+// use App\Models\Post;
+// use App\Models\Video;
+// use App\Models\Tag;
+// use App\Models\Taggable;
 
-Route::get('/create', function() {
-    $post = Post::find(1);
-    $find_tag = Tag::find(1);
-    $video = Video::find(1);
-    $media_arr = [$post, $video];
+// Route::get('/create', function() {
+//     $post = Post::find(1);
+//     $find_tag = Tag::find(1);
+//     $video = Video::find(1);
+//     $media_arr = [$post, $video];
 
-    foreach($media_arr as $media) {
-        $createBool = true;
-        foreach($media->tags as $tag) {
-            if($tag->name == $find_tag->name) {
-                $createBool = false;
-            }
-        }
-        if($createBool) {
-            $media->tags()->save($find_tag);
-        } else {
-            echo 'Already!<br>';
-        }
-    }
+//     foreach($media_arr as $media) {
+//         $createBool = true;
+//         foreach($media->tags as $tag) {
+//             if($tag->name == $find_tag->name) {
+//                 $createBool = false;
+//             }
+//         }
+//         if($createBool) {
+//             $media->tags()->save($find_tag);
+//         } else {
+//             echo 'Already!<br>';
+//         }
+//     }
     
-        // $post->tags()->save($tag);
+//         // $post->tags()->save($tag);
 
 
-        // $video->tags()->save($tag);
+//         // $video->tags()->save($tag);
+// });
+
+// Route::get('/read', function() {
+//     $post = Post::find(1);
+
+//     foreach($post->tags as $tag) {
+//         print_r($tag->name);
+//     }
+// });
+
+// Route::get('/update', function() {
+//     $post = Post::find(1);
+
+//     foreach($post->tags as $tag) {
+//         /*if($tag->name == 'first tag') {
+//             $tag->name = 'updated tag';
+//             $tag->save();
+//         }*/
+//         $tag->whereName('updated tag')->update(['name' => 'updated again tag']);
+//     }
+// });
+
+// Route::get('/delete', function() {
+//     $post = Post::find(1);
+
+//     foreach($post->tags as $tag) {
+//         /*if($tag->name == 'first tag') {
+//             $tag->name = 'updated tag';
+//             $tag->save();
+//         }*/
+//         $delete_id = $tag->whereId(1)->delete();
+//         if($delete_id) {
+//             Taggable::whereTagId($delete_id)->delete();
+//         }
+//     }
+// });
+
+/* WebApp */
+
+use Carbon\Carbon;
+
+Route::get('/', function () {
+    return redirect('/posts');
 });
 
-Route::get('/read', function() {
-    $post = Post::find(1);
+Route::group(['middleware'=>'web'], function() {
 
-    foreach($post->tags as $tag) {
-        print_r($tag->name);
-    }
-});
+    Route::resource('posts', App\Http\Controllers\PostController::class);
+    Route::get('/dates', function() {
+        $date = new DateTime('+1 week');
+        echo $date->format('m-d-Y') . '<br>';
+        echo Carbon::now()->addDays(10)->diffForHumans() . '<br>';
+        echo Carbon::now()->subMonths(5)->diffForHumans() . '<br>';
+        echo Carbon::now()->yesterday()->diffForHumans() . '<br>';
+    });
 
-Route::get('/update', function() {
-    $post = Post::find(1);
-
-    foreach($post->tags as $tag) {
-        /*if($tag->name == 'first tag') {
-            $tag->name = 'updated tag';
-            $tag->save();
-        }*/
-        $tag->whereName('updated tag')->update(['name' => 'updated again tag']);
-    }
-});
-
-Route::get('/delete', function() {
-    $post = Post::find(1);
-
-    foreach($post->tags as $tag) {
-        /*if($tag->name == 'first tag') {
-            $tag->name = 'updated tag';
-            $tag->save();
-        }*/
-        $delete_id = $tag->whereId(1)->delete();
-        if($delete_id) {
-            Taggable::whereTagId($delete_id)->delete();
-        }
-    }
 });

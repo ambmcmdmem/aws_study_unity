@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Http\Requests\CreatePostRequest;
 
 class PostController extends Controller
 {
@@ -14,7 +16,10 @@ class PostController extends Controller
     public function index()
     {
         //
-        return 'It\'s Working!';
+        // $posts = Post::all();
+        $posts = Post::orderBy('updated_at', 'DESC')->get();
+
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -25,7 +30,8 @@ class PostController extends Controller
     public function create()
     {
         //
-        return 'Nice Create!';
+
+        return view('posts.create');
     }
 
     /**
@@ -34,9 +40,25 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
         //
+
+        // return $request->all();
+        // return $request->title;
+        // $this->validate($request, [
+        //     'title' => 'required',
+        //     'content' => 'required'
+        // ]);
+
+        Post::create([
+            'user_id' => (int)$request->user_id,
+            'title' => $request->title,
+            'contents' => $request->contents
+        ]);
+
+        return redirect('/posts');
+        
     }
 
     /**
@@ -45,10 +67,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($post)
+    public function show($id)
     {
         //
-        return $post;
+        $post = Post::find($id);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -60,6 +83,8 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::find($id);
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -72,6 +97,19 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $post = Post::find($id);
+
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+
+        $post->update([
+            'user_id' => (int)$request->user_id,
+            'title' => $request->title,
+            'contents' => $request->contents
+        ]);
+        return redirect('/posts');
     }
 
     /**
@@ -83,6 +121,10 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::find($id);
+
+        $post->delete();
+        return redirect('/posts');
     }
 
     public function contact() {

@@ -8,8 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Taggable extends Model
 {
     use HasFactory;
-
-    public function tags() {
-        return $this->morphToMany('App\Models\Tag', 'taggable');
-    }
 }

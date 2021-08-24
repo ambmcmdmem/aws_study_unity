@@ -9,7 +9,11 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name'
-    ];
+    public function posts() {
+        return $this->morphedByMany('App\Models\Post', 'taggable');
+    }
+
+    public function videos() {
+        return $this->morphedByMany('App\Models\Video', 'taggable');
+    }
 }
