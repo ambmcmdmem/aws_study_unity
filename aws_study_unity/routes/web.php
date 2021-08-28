@@ -538,42 +538,54 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
+// Route::get('/', function () {
 
-    // if(Auth::check()) {
-    //     return 'The user is logged in!';
-    // }
+//     // if(Auth::check()) {
+//     //     return 'The user is logged in!';
+//     // }
 
-    // $username = 'test';
-    // $password = 'testPas';
+//     // $username = 'test';
+//     // $password = 'testPas';
 
-    // if(Auth::attempt([
-    //     'username' => $username,
-    //     'password' => $password
-    // ])) {
-    //     return redirect()->intended('/admin');
-    // }
+//     // if(Auth::attempt([
+//     //     'username' => $username,
+//     //     'password' => $password
+//     // ])) {
+//     //     return redirect()->intended('/admin');
+//     // }
 
-    // Auth::logout();
+//     // Auth::logout();
 
-    return view('welcome');
+//     return view('welcome');
 
 
-    // $user = Auth::user();
-    // if($user->isAdmin()) {
-    //     return 'this is admin!!';
-    // }
-    // return 'not Admin';
+//     // $user = Auth::user();
+//     // if($user->isAdmin()) {
+//     //     return 'this is admin!!';
+//     // }
+//     // return 'not Admin';
+// });
+
+// Route::get('/admin/user/roles', [
+//     'middleware' => ['role', 'auth', 'web'],
+//     function() {
+
+//         return 'Middleware role';
+//     }
+// ]);
+
+// Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
+
+
+Route::get('/', function() {
+    $data = [
+        'title' => 'Hi!',
+        'content' => 'It\'s Content!'
+    ];
+
+    Mail::send('email.email', $data, function($message) {
+        $message->to('ambmcmdmem@au.com', 'Daiki')->subject('Hello!');
+    });
 });
-
-Route::get('/admin/user/roles', [
-    'middleware' => ['role', 'auth', 'web'],
-    function() {
-
-        return 'Middleware role';
-    }
-]);
-
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
