@@ -17,7 +17,9 @@ class PostController extends Controller
     {
         //
         // $posts = Post::all();
-        $posts = Post::orderBy('updated_at', 'DESC')->get();
+        // $posts = Post::latest()->get();
+        // $posts = Post::orderBy('updated_at', 'DESC')->get();
+        $posts = Post::Test()->get();
 
         return view('posts.index', compact('posts'));
     }
@@ -44,6 +46,16 @@ class PostController extends Controller
     {
         //
 
+        $input = $request->all();
+        
+        if($file = $request->file('file')) {
+            $name = $file->getClientOriginalName();
+            $file->move('images', $name);
+            $input['path'] = $name;
+        }
+
+        Post::create($input);
+
         // return $request->all();
         // return $request->title;
         // $this->validate($request, [
@@ -51,11 +63,20 @@ class PostController extends Controller
         //     'content' => 'required'
         // ]);
 
-        Post::create([
-            'user_id' => (int)$request->user_id,
-            'title' => $request->title,
-            'contents' => $request->contents
-        ]);
+        // $file = $request->file('file');
+        // echo '<br>';
+
+        // echo $file->getClientOriginalName() . '<br>';
+
+        // echo $file->getSize();
+
+
+
+        // Post::create([
+        //     'user_id' => (int)$request->user_id,
+        //     'title' => $request->title,
+        //     'contents' => $request->contents
+        // ]);
 
         return redirect('/posts');
         

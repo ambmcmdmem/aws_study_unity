@@ -5,9 +5,11 @@
     <!-- <form action="/posts" method="POST"> -->
     {!! Form::open([
         'method' => 'POST',
-        'route' => 'posts.store'
+        'route' => 'posts.store',
+        'files' => true
     ]) !!}
-
+        {!! Form::label('file', 'File!') !!}
+        {!! Form::file('file') !!}
         <!-- <input type="text" name="title" placeholder='Enter title'> -->
         {!! Form::label('title', 'Title') !!}
         {!! Form::text('title', null, [

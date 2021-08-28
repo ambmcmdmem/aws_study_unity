@@ -11,13 +11,15 @@ class Post extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public $imgPath = '/images/';
     protected $dates = ['deleted_at'];
 
     // createを許可
     protected $fillable = [
         'title',
         'contents',
-        'user_id'
+        'user_id',
+        'path'
     ];
 
     public function user() {
@@ -33,5 +35,17 @@ class Post extends Model
 
     public function tags() {
         return $this->morphToMany('App\Models\Tag', 'taggable');
+    }
+
+    public function getPathAttribute($value) {
+        if(empty($value)) {
+            return '';
+        } else {
+            return $this->imgPath . $value;
+        }
+    }
+
+    public static function scopeTest($query) {
+        return $query->orderBy('updated_at', 'DESC');
     }
 }

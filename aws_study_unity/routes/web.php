@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// // Route::get('/', function () {
-// //     return view('welcome');
-// // });
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // // Route::get('/about', function () {
 // //     return "Hi about page";
@@ -37,10 +37,6 @@ use Illuminate\Support\Facades\Route;
 // // Route::get('/admin/post/examples',array('as' => 'admin.post' , function () {
 // //     return "This url " . route('admin.post');
 // // }));
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // // Route::get('/post/{id}', [App\Http\Controllers\PostController::class, 'index']);
 // Route::get('/posts/contact', [App\Http\Controllers\PostController::class, 'contact']);
@@ -508,21 +504,76 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 /* WebApp */
 
-use Carbon\Carbon;
+// use Carbon\Carbon;
+// use App\Models\User;
+
+// Route::get('/', function () {
+//     return redirect('/posts');
+// });
+
+// Route::group(['middleware'=>'web'], function() {
+
+//     Route::resource('posts', App\Http\Controllers\PostController::class);
+
+//     Route::get('/dates', function() {
+//         $date = new DateTime('+1 week');
+//         echo $date->format('m-d-Y') . '<br>';
+//         echo Carbon::now()->addDays(10)->diffForHumans() . '<br>';
+//         echo Carbon::now()->subMonths(5)->diffForHumans() . '<br>';
+//         echo Carbon::now()->yesterday()->diffForHumans() . '<br>';
+//     });
+
+//     Route::get('/getname', function() {
+//         $user = User::find(1);
+//         echo $user->name;
+//     });
+
+//     Route::get('/setname', function() {
+//         $user = User::find(1);
+//         $user->name = 'UserName';
+//         $user->save();
+//     });
+
+// });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/', function () {
-    return redirect('/posts');
+
+    // if(Auth::check()) {
+    //     return 'The user is logged in!';
+    // }
+
+    // $username = 'test';
+    // $password = 'testPas';
+
+    // if(Auth::attempt([
+    //     'username' => $username,
+    //     'password' => $password
+    // ])) {
+    //     return redirect()->intended('/admin');
+    // }
+
+    // Auth::logout();
+
+    return view('welcome');
+
+
+    // $user = Auth::user();
+    // if($user->isAdmin()) {
+    //     return 'this is admin!!';
+    // }
+    // return 'not Admin';
 });
 
-Route::group(['middleware'=>'web'], function() {
+Route::get('/admin/user/roles', [
+    'middleware' => ['role', 'auth', 'web'],
+    function() {
 
-    Route::resource('posts', App\Http\Controllers\PostController::class);
-    Route::get('/dates', function() {
-        $date = new DateTime('+1 week');
-        echo $date->format('m-d-Y') . '<br>';
-        echo Carbon::now()->addDays(10)->diffForHumans() . '<br>';
-        echo Carbon::now()->subMonths(5)->diffForHumans() . '<br>';
-        echo Carbon::now()->yesterday()->diffForHumans() . '<br>';
-    });
+        return 'Middleware role';
+    }
+]);
 
-});
+Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
