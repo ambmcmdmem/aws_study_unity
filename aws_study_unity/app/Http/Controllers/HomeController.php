@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -24,34 +24,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-
-        return view('home', compact('user'));
-        // session([
-        //     'peter' => 'student'
-        // ]);
-
-        // session([
-        //     'edwin' => 'student',
-
-        // ]);
-
-        // return session('edwin');
-
-        // return $request->session()->all();
-
-        // $request->session()->forget('edwin');
-
-        // $request->session()->flush();
-
-        // return $request->session()->all();
-
-        // $request->session()->flash('message', 'Post has been created');
-
-        // return $request->session()->all();
-
-        // $request->session()->reflash();
-
-        // $request->session()->keep('message');
+        return view('home');
     }
 }
