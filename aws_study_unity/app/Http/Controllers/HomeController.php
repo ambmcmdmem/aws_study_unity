@@ -24,9 +24,9 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        // $user = Auth::user();
+        $user = Auth::user();
 
-        // return view('home', compact('user'));
+        return view('home', compact('user'));
         // session([
         //     'peter' => 'student'
         // ]);
@@ -50,8 +50,8 @@ class HomeController extends Controller
 
         // return $request->session()->all();
 
-        $request->session()->reflash();
+        // $request->session()->reflash();
 
-        $request->session()->keep('message');
+        // $request->session()->keep('message');
     }
 }

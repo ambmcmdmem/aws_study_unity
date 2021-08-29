@@ -579,13 +579,19 @@ Auth::routes();
 // Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
 
 
-Route::get('/', function() {
-    $data = [
-        'title' => 'Hi!',
-        'content' => 'It\'s Content!'
-    ];
+// Route::get('/', function() {
+//     $data = [
+//         'title' => 'Hi!',
+//         'content' => 'It\'s Content!'
+//     ];
 
-    Mail::send('email.email', $data, function($message) {
-        $message->to('ambmcmdmem@au.com', 'Daiki')->subject('Hello!');
-    });
-});
+//     Mail::send('email.email', $data, function($message) {
+//         $message->to('ambmcmdmem@au.com', 'Daiki')->subject('Hello!');
+//     });
+// });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/', function() {
+//     return view('welcome');
+// });
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
