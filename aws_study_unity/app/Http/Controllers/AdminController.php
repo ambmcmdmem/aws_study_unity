@@ -8,10 +8,9 @@ class AdminController extends Controller
 {
     //
     public function __construct() {
-        $this->middleware('isAdmin');
     }
 
     public function index() {
-        return 'you are a admin';
+        return view('admin.index');
     }
 }

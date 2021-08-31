@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Post;
+
 
 class HomeController extends Controller
 {
@@ -24,6 +26,9 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        return view('home');
+        
+        $posts = Post::all();
+
+        return view('home', ['posts' => $posts]);
     }
 }
