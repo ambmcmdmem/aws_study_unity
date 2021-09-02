@@ -18,6 +18,7 @@
                     <th>Image</th>
                     <th>Created_at</th>
                     <th>Updated_at</th>
+                    <th>Update</th>
                     <th>Delete</th>
                 </tr>
                 </thead>
@@ -29,6 +30,7 @@
                     <th>Image</th>
                     <th>Created_at</th>
                     <th>Updated_at</th>
+                    <th>Update</th>
                     <th>Delete</th>
                 </tr>
                 </tfoot>
@@ -506,15 +508,20 @@
                         <td>{{$post->created_at->diffForHumans()}}</td>
                         <td>{{$post->updated_at->diffForHumans()}}</td>
                         <td>
-                            {!! Form::model($post, [
+                            <a href="{{route('posts.edit', $post->id)}}" class="btn btn-primary">
+                            UPDATE
+                            </a>
+                        </td>
+                        <td>
+                            {!! Form::open([
                                 'method' => 'DELETE',
-                                'action' => ['App\Http\Controllers\PostController@destroy', $post->id],
-                                'id'     => 'delete_form'
+                                'route'  => ['posts.destroy', $post->id],
+                                'id'     => 'delete_form' . $post->id
                             ]) !!}
                                 {!! Form::button('DELETE', [
-                                    'class'   => 'btn btn-danger',
+                                    'id'      => 'delete_btn' . $post->id,
+                                    'class'   => 'btn btn-danger delete_btn',
                                     'type'    => 'button',
-                                    'onClick' => 'confirmFunc()'
                                 ]) !!}
                             {!! Form::close() !!}
                         </td>
@@ -537,13 +544,23 @@
 <script src="{{asset('js/demo/datatables-demo.js')}}"></script>
 
 <script>
-    const confirmFunc = () => {
+    const confirmFunc = (id) => {
         const ret = confirm('really?');
-        const delete_form = document.getElementById('delete_form');
+        const delete_form = document.getElementById('delete_form' + id);
         if(ret) {
             delete_form.submit();
         }
     };
+
+    const delete_btns = document.getElementsByClassName('delete_btn');
+    for(let i = 0; i < delete_btns.length; i++) {
+        const delete_btn = delete_btns[i];
+        delete_btn.addEventListener('click', () => {
+            const btn_id = delete_btn.id;
+            const id = btn_id.replace(/[^0-9]/g, '');
+            confirmFunc(id);
+        });
+    }
 </script>
 @endsection
 

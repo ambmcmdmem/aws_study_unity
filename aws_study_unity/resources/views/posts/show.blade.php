@@ -11,6 +11,7 @@
 <!-- <form id="delete_form" action="/posts/{{$post->id}}" method="POST"> -->
     @csrf
     <!-- <input type="hidden" name="_method" value="DELETE"> -->
+    <!-- @method('DELETE') -->
     <a class='' onclick="confirmFunc();">DELETE</a>
 {!! Form::close() !!}
 <script>

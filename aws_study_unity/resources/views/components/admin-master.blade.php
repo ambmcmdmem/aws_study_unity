@@ -318,10 +318,16 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          @if (session('success'))
-            <div class="alert alert-success">
+          @if (session('success') || session('danger'))
+            <?php $alertType = ''; ?>
+            @if(session('success'))
+              <?php $alertType = 'success'; ?>
+            @else
+              <?php $alertType = 'danger'; ?>
+            @endif
+            <div class="alert alert-{{$alertType}}">
                 <ul>
-                    <li>{!! session('success') !!}</li>
+                    <li>{!! session($alertType) !!}</li>
                 </ul>
             </div>
           @endif
