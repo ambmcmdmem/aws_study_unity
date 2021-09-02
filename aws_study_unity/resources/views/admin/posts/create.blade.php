@@ -1,7 +1,7 @@
 <x-admin-master>
 @section('content')
     <h1>Create</h1>
-
+    
     {!! Form::open([
         'method' => 'POST',
         'route'  => 'posts.store',
@@ -16,6 +16,9 @@
                 'placeholder'      => 'Enter title',
                 'required'         => true
             ]) !!}
+            @error('title')
+                <?php print_r($errors); ?>
+            @enderror
         </div>
         <div class="form-group">
             {!! Form::label('post_image', 'File') !!}
