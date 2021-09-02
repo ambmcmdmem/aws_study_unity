@@ -12,6 +12,9 @@ class Post extends Model
     protected $guarded = [];
 
     public function user() {
-        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+        // 第1引数がこのアイテムを持つモデルを指定
+        // 2がこのモデルの外部キーを指定(=user_id)
+        // 3がこのアイテムを持つモデルのキーを指定(=id)
+        return $this->belongsTo('App\Models\User');
     }
 }

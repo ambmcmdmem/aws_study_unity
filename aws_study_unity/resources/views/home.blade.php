@@ -9,8 +9,8 @@
 <!-- Blog Post -->
 @foreach($posts as $post)
 <div class="card mb-4">
-    @unless(empty($post->image))
-    <img class="card-img-top" src="{$post->image}" alt="{$post->title} image">
+    @unless(empty($post->post_image))
+    <img class="card-img-top" src="{{$post->post_image}}" alt="{{$post->title}} image">
     @endunless
 
     <div class="card-body">
@@ -19,11 +19,11 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;">{{$post->body}}</p>
-    <a href="/post" class="btn btn-primary">Read More &rarr;</a>
+    <a href="{{route('post', $post->id)}}" class="btn btn-primary">Read More &rarr;</a>
     </div>
     <div class="card-footer text-muted">
     Posted on {{$post->created_at->diffForHumans()}} by
-    <a href="#">Start Bootstrap</a>
+    <a href="#">{{$post->user->name}}</a>
     </div>
 </div>
 @endforeach
