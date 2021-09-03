@@ -532,6 +532,9 @@
             </div>
         </div>
     </div>
+    <div class="pagination justify-content-center">
+        {{ $posts->links('vendor.pagination.default') }}
+    </div>
 @endsection
 
 
@@ -541,7 +544,7 @@
 <script src="{{asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
 <!-- Page level custom scripts -->
-<script src="{{asset('js/demo/datatables-demo.js')}}"></script>
+<!-- <script src="{{asset('js/demo/datatables-demo.js')}}"></script> -->
 
 <script>
     const confirmFunc = (id) => {
