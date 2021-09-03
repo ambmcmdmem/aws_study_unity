@@ -604,6 +604,11 @@ Route::middleware('auth')->group(function() {
     Route::post('/admin/posts', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store');
     Route::patch('/admin/posts/{post}/update', [App\Http\Controllers\PostController::class, 'update'])->name('posts.update');
     Route::delete('/admin/posts/{post}/destroy', [App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy');
+
+    Route::get('/admin/users/{user}/profile', [App\Http\Controllers\UserController::class, 'show'])->name('users.profile.show');
+    Route::put('/admin/users/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('users.profile.update');
+    
+    Route::get('/admin/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 });
 
 // Route::get('/admin/posts/{post}/edit', [App\Http\Controllers\PostController::class, 'edit'])->middleware('can:view,post')->name('posts.edit');
