@@ -92,4 +92,29 @@ class UserPolicy
     {
         //
     }
+
+    public function attach(User $user, $role_name) {
+
+        // dd($user->userHasRole($role_name));
+        if($user->userHasRole($role_name)) {
+            // return back()->with('danger', 'It role has already attached.');
+            return false;
+        }
+
+        return true;
+
+        // return !$user->userHasRole($role_name);
+    }
+
+    public function detach(User $user, $role_name) {
+
+        // dd($user->userHasRole($role_id));
+        if(!$user->userHasRole($role_name)) {
+            // return back()->with('danger', 'It role has already detached.');
+            return false;
+        }
+        
+        return true;
+        // return $user->userHasRole($role_name);
+    }
 }
