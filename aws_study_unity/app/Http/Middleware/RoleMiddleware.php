@@ -15,11 +15,15 @@ class RoleMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $role)
     {
-        $user = Auth::user();
-        if($user->isAdmin()) {
-            return redirect()->intended('/admin');
+        // $user = Auth::user();
+        // if($user->isAdmin()) {
+        //     return redirect()->intended('/admin');
+        // }
+
+        if(!$request->user()->userHasRole($role)) {
+            abort(403, 'You aren\'t authorized.');
         }
 
         return $next($request);

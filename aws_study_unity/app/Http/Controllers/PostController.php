@@ -121,7 +121,7 @@ class PostController extends Controller
         // auth()->user()->posts()->save($newPost);
 
 
-        $this->authorize('update');
+        $this->authorize('update', $post);
 
         $post->update($inputs);
 
