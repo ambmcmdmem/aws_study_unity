@@ -19,4 +19,13 @@ class Permission extends Model
         return $this->belongsToMany(User::class, 'permission_user', 'permission_id', 'role_id');
         
     }
+
+    public function hasRole($role_name) {
+        foreach($this->roles as $role) {
+            if($role->name == $role_name) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

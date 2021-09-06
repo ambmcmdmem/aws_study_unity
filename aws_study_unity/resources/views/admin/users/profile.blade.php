@@ -149,6 +149,7 @@
                                             {!! Form::button('Attach', [
                                                 'class'    => 'btn btn-primary',
                                                 'type'     => 'submit',
+                                                'disabled' => $user->userHasRole($role->name)   
                                             ]) !!}
                                             {!! Form::hidden('role', $role->id) !!}
                                         {!! Form::close() !!}
@@ -161,6 +162,7 @@
                                             {!! Form::button('Detach', [
                                                 'class'    => 'btn btn-danger',
                                                 'type'     => 'submit',
+                                                'disabled' => !$user->userHasRole($role->name)
                                             ]) !!}
                                             {!! Form::hidden('role', $role->id) !!}
                                         {!! Form::close() !!}
