@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Permission;
 use Illuminate\Support\Str;
+use App\Http\Requests\PermissionRequest;
 
 
 class PermissionController extends Controller
@@ -36,5 +37,18 @@ class PermissionController extends Controller
         $permission->delete();
 
         return back()->with('success', 'Deleted!!');
+    }
+
+    public function update(Permission $permission, PermissionRequest $permissionRequest) {
+        $permission->name = Str::ucfirst($permissionRequest['name']);
+        $permission->slug = Str::slug(Str::lower($permissionRequest['name']), '-');
+
+        if($permission->isDirty('name')) {
+            $permission->update();
+            session()->flash('success', 'Updated!!');
+        } else {
+            session()->flash('danger', 'Not changed.');
+        }
+        return back();
     }
 }   

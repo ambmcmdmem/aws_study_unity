@@ -17,8 +17,8 @@ class PostController extends Controller
     public function index() {
         // $posts = auth()->user()->posts()->get();
         // $posts = Post::orderBy('created_at', 'DESC')->get();
-        // $posts = auth()->user()->posts()->paginate(5);
-        $posts = Post::paginate(5);
+        $posts = auth()->user()->posts()->paginate(5);
+        // $posts = Post::paginate(5);
         // $posts = Post::all();
 
         return view('admin.posts.index', ['posts' => $posts]);
